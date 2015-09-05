@@ -2,3 +2,5 @@ web-application/target/
 web-application/.settings/
 *.project
 *.springBeans
+database-installer/.settings/
+database-installer/target/
