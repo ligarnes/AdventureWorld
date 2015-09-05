@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SqlScript xmlns="http://www.alteiar.net/sql">
+	<name>004-topicTable</name>
+	<description>Create the table for topics</description>
+	<query>CREATE TABLE topic (id bigint auto_increment, parent_id bigint, name VARCHAR(200), id_access bigint, id_content bigint, content_type VARCHAR(200), PRIMARY KEY(id), FOREIGN KEY (id_access) REFERENCES access(id))</query>
+</SqlScript>

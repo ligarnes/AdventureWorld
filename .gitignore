@@ -1,0 +1,4 @@
+web-application/target/
+web-application/.settings/
+*.project
+*.springBeans

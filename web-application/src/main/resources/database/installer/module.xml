@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SqlModule xmlns="http://www.alteiar.net/sql">
+	<name>Web app installer</name>
+	<description>The database installer for the web application</description>
+	<package>database.installer.h2</package>
+	<script>001-playerTable</script>
+	<script>002-campaignTable</script>
+	<script>003-accessTable</script>
+	<script>004-topicTable</script>
+	<script>005-articleTable</script>
+</SqlModule>
