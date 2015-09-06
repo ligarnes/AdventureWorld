@@ -11,7 +11,7 @@ public class DatabaseUtil {
 
 	public static void start() {
 
-		ConfigManager.getInstance().setProperty("jdbc.url", "jdbc:h2:file:./database/test");
+		ConfigManager.getInstance().setProperty("jdbc.url", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
 		ConfigManager.getInstance().setProperty("jdbc.username", "sa");
 		ConfigManager.getInstance().setProperty("jdbc.password", "");
 	}
@@ -28,8 +28,9 @@ public class DatabaseUtil {
 		AppContext.getInstance().initialize();
 	}
 
-	public static void shutdown() {
+	public static DataSource getDatasource() {
 
-		// AppContext.getInstance().stop();
+		return AppContext.getInstance().getPersistenceAdapter().getDatasource();
 	}
+
 }

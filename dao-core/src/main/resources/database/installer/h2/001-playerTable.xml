@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SqlScript xmlns="http://www.alteiar.net/sql">
+	<name>001-playerTable</name>
+	<description>Create the table of players</description>
+	<query>CREATE TABLE player (player_id bigint auto_increment, name varchar(120), is_mj boolean, PRIMARY KEY(player_id))</query>
+</SqlScript>

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import net.alteiar.dao.DaoFactory;
+import net.alteiar.context.AppContext;
 import net.alteiar.model.Access;
 import net.alteiar.model.content.Article;
 import net.alteiar.model.content.Topic;
@@ -33,7 +33,7 @@ public class ArticleController extends AbstractController {
 		Article article = null;
 		try {
 
-			article = DaoFactory.getInstance().getArticleDao().find(articleId);
+			article = AppContext.getInstance().getDaoFactory().getArticleDao().find(articleId);
 		} catch (DataAccessException ex) {
 
 			article = new Article();
@@ -60,14 +60,14 @@ public class ArticleController extends AbstractController {
 		Access access = new Access();
 		access.setPublic(true);
 
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		AppContext.getInstance().getDaoFactory().getAccessDao().insert(access);
 
 		// create article
 		Article article = new Article();
 		article.setTitle(title);
 		article.setContent(content);
 
-		DaoFactory.getInstance().getArticleDao().insert(article);
+		AppContext.getInstance().getDaoFactory().getArticleDao().insert(article);
 
 		// create Topic
 		Topic topic = new Topic();
@@ -77,7 +77,7 @@ public class ArticleController extends AbstractController {
 		topic.setContentId(article.getId());
 		topic.setContentType(article.getClass().getCanonicalName());
 
-		DaoFactory.getInstance().getTopicDao().insert(topic);
+		AppContext.getInstance().getDaoFactory().getTopicDao().insert(topic);
 
 		model.addAttribute("article", article);
 

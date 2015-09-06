@@ -2,14 +2,15 @@ package net.alteiar.database;
 
 import java.util.List;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import junit.framework.Assert;
-import net.alteiar.dao.DaoFactory;
+import net.alteiar.dao.campaign.AccessDao;
+import net.alteiar.dao.campaign.AccessDaoImpl;
 import net.alteiar.model.Access;
 
 public class AccessDaoTest {
@@ -20,16 +21,22 @@ public class AccessDaoTest {
 		DatabaseUtil.start();
 	}
 
+	private AccessDao dao;
+
 	@Before
 	public void before() {
 
 		DatabaseUtil.reset();
+
+		dao = new AccessDaoImpl();
+		dao.setDatasource(DatabaseUtil.getDatasource());
 	}
 
-	@AfterClass
-	public static void after() {
+	@After
+	public void after() {
 
-		DatabaseUtil.shutdown();
+		DatabaseUtil.reset();
+		dao = null;
 	}
 
 	@Test
@@ -37,20 +44,20 @@ public class AccessDaoTest {
 
 		Access access = new Access();
 		access.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		dao.insert(access);
 
 		Assert.assertNotNull(access.getId());
 
-		Access found = DaoFactory.getInstance().getAccessDao().find(access.getId());
+		Access found = dao.find(access.getId());
 
 		Assert.assertEquals(access.getId(), found.getId());
 		Assert.assertEquals(access.isPublic(), found.isPublic());
 
 		Access accessSecond = new Access();
 		accessSecond.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(accessSecond);
+		dao.insert(accessSecond);
 
-		found = DaoFactory.getInstance().getAccessDao().find(accessSecond.getId());
+		found = dao.find(accessSecond.getId());
 		Assert.assertEquals(accessSecond.getId(), found.getId());
 		Assert.assertEquals(accessSecond.isPublic(), found.isPublic());
 	}
@@ -58,22 +65,22 @@ public class AccessDaoTest {
 	@Test
 	public void testFindAll() {
 
-		List<Access> allAccessFound = DaoFactory.getInstance().getAccessDao().findAll();
+		List<Access> allAccessFound = dao.findAll();
 
 		Assert.assertEquals(0, allAccessFound.size());
 
 		Access access = new Access();
 		access.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		dao.insert(access);
 
-		allAccessFound = DaoFactory.getInstance().getAccessDao().findAll();
+		allAccessFound = dao.findAll();
 		Assert.assertEquals(1, allAccessFound.size());
 
 		Access access2 = new Access();
 		access2.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access2);
+		dao.insert(access2);
 
-		allAccessFound = DaoFactory.getInstance().getAccessDao().findAll();
+		allAccessFound = dao.findAll();
 		Assert.assertEquals(2, allAccessFound.size());
 	}
 
@@ -82,20 +89,20 @@ public class AccessDaoTest {
 
 		Access access = new Access();
 		access.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		dao.insert(access);
 
 		Assert.assertNotNull(access.getId());
 
-		Access found = DaoFactory.getInstance().getAccessDao().find(access.getId());
+		Access found = dao.find(access.getId());
 
 		Assert.assertEquals(access.getId(), found.getId());
 		Assert.assertEquals(access.isPublic(), found.isPublic());
 
 		access.setPublic(false);
 
-		DaoFactory.getInstance().getAccessDao().update(access);
+		dao.update(access);
 
-		found = DaoFactory.getInstance().getAccessDao().find(access.getId());
+		found = dao.find(access.getId());
 		Assert.assertEquals(access.getId(), found.getId());
 		Assert.assertEquals(access.isPublic(), found.isPublic());
 	}
@@ -105,17 +112,17 @@ public class AccessDaoTest {
 
 		Access access = new Access();
 		access.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		dao.insert(access);
 
 		Assert.assertNotNull(access.getId());
 
-		Access found = DaoFactory.getInstance().getAccessDao().find(access.getId());
+		Access found = dao.find(access.getId());
 
 		Assert.assertEquals(access.getId(), found.getId());
 		Assert.assertEquals(access.isPublic(), found.isPublic());
 
-		DaoFactory.getInstance().getAccessDao().delete(access.getId());
+		dao.delete(access.getId());
 
-		DaoFactory.getInstance().getAccessDao().find(access.getId());
+		dao.find(access.getId());
 	}
 }
