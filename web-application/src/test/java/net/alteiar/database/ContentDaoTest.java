@@ -5,29 +5,48 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import junit.framework.Assert;
-import net.alteiar.dao.DaoFactory;
+import net.alteiar.dao.campaign.AccessDao;
+import net.alteiar.dao.campaign.AccessDaoImpl;
 import net.alteiar.dao.campaign.content.TopicDao;
+import net.alteiar.dao.campaign.content.TopicDaoImpl;
 import net.alteiar.model.Access;
 import net.alteiar.model.content.Article;
 import net.alteiar.model.content.Topic;
 
 public class ContentDaoTest {
 
-	@Before
-	public void setup() {
+	@BeforeClass
+	public static void setup() {
 
 		DatabaseUtil.start();
+	}
+
+	private TopicDao topicDao;
+	private AccessDao accessDao;
+
+	@Before
+	public void before() {
+
 		DatabaseUtil.reset();
+
+		topicDao = new TopicDaoImpl();
+		topicDao.setDatasource(DatabaseUtil.getDatasource());
+
+		accessDao = new AccessDaoImpl();
+		accessDao.setDatasource(DatabaseUtil.getDatasource());
 	}
 
 	@After
 	public void after() {
 
-		DatabaseUtil.shutdown();
+		DatabaseUtil.reset();
+		topicDao = null;
+		accessDao = null;
 	}
 
 	@Test(expected = EmptyResultDataAccessException.class)
@@ -35,14 +54,14 @@ public class ContentDaoTest {
 
 		Access access = new Access();
 		access.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		accessDao.insert(access);
 
 		Topic topic = new Topic();
 		topic.setName("dir-name");
 		topic.setParentId(null);
 		topic.setAccessId(access.getId());
 
-		TopicDao contentDao = DaoFactory.getInstance().getTopicDao();
+		TopicDao contentDao = topicDao;
 		contentDao.insert(topic);
 
 		Topic found = contentDao.find(topic.getId());
@@ -71,14 +90,14 @@ public class ContentDaoTest {
 
 		Access access = new Access();
 		access.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		accessDao.insert(access);
 
-		TopicDao contentDao = DaoFactory.getInstance().getTopicDao();
+		TopicDao contentDao = topicDao;
 		contentDao.insert(createTopic("dir1", null, access.getId()));
 		contentDao.insert(createTopic("dir2", null, access.getId()));
 		contentDao.insert(createTopic("dir3", 1L, access.getId()));
 
-		List<Topic> found = DaoFactory.getInstance().getTopicDao().findAll(Arrays.asList(1L, 2L, 3L));
+		List<Topic> found = topicDao.findAll(Arrays.asList(1L, 2L, 3L));
 
 		Assert.assertEquals(3, found.size());
 
@@ -86,7 +105,7 @@ public class ContentDaoTest {
 		Assert.assertEquals("dir2", found.get(1).getName());
 		Assert.assertEquals("dir3", found.get(2).getName());
 
-		found = DaoFactory.getInstance().getTopicDao().findAll(Arrays.asList(3L));
+		found = topicDao.findAll(Arrays.asList(3L));
 
 		Assert.assertEquals(1, found.size());
 		Assert.assertEquals(1L, found.get(0).getParentId().longValue());
@@ -97,13 +116,12 @@ public class ContentDaoTest {
 
 		Access access = new Access();
 		access.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		accessDao.insert(access);
 
-		TopicDao topicDao = DaoFactory.getInstance().getTopicDao();
 		topicDao.insert(createTopic("dir1", null, access.getId()));
 		topicDao.insert(createTopic("dir3", 1L, access.getId()));
 
-		Topic found = DaoFactory.getInstance().getTopicDao().find(2L);
+		Topic found = topicDao.find(2L);
 
 		Assert.assertEquals(Long.valueOf(1), found.getParentId());
 		Assert.assertEquals("dir3", found.getName());
@@ -114,16 +132,15 @@ public class ContentDaoTest {
 
 		Access access = new Access();
 		access.setPublic(true);
-		DaoFactory.getInstance().getAccessDao().insert(access);
+		accessDao.insert(access);
 
 		Topic topic = createTopic("dir3", null, access.getId());
 		topic.setContentId(2L);
 		topic.setContentType(Article.class.getCanonicalName());
 
-		TopicDao topicDao = DaoFactory.getInstance().getTopicDao();
 		topicDao.insert(topic);
 
-		Topic found = DaoFactory.getInstance().getTopicDao().find(topic.getId());
+		Topic found = topicDao.find(topic.getId());
 
 		Assert.assertEquals(null, found.getParentId());
 		Assert.assertEquals("dir3", found.getName());

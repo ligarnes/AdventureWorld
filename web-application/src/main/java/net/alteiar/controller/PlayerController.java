@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import net.alteiar.dao.DaoFactory;
+import net.alteiar.context.AppContext;
 import net.alteiar.dao.campaign.PlayerDao;
 import net.alteiar.model.Player;
 
@@ -30,7 +30,7 @@ public class PlayerController extends AbstractController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 
-		PlayerDao dao = DaoFactory.getInstance().getPlayerDao();
+		PlayerDao dao = AppContext.getInstance().getDaoFactory().getPlayerDao();
 
 		logger.debug("Find all players");
 		List<Player> players = dao.findAll();
@@ -51,7 +51,7 @@ public class PlayerController extends AbstractController {
 		newPlayer.setName(name);
 		newPlayer.setDm(isDm);
 
-		DaoFactory.getInstance().getPlayerDao().insert(newPlayer);
+		AppContext.getInstance().getDaoFactory().getPlayerDao().insert(newPlayer);
 
 		return "redirect:/player/";
 	}

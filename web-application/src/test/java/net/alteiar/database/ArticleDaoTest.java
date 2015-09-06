@@ -2,26 +2,39 @@ package net.alteiar.database;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import junit.framework.Assert;
-import net.alteiar.dao.DaoFactory;
+import net.alteiar.dao.campaign.content.ArticleDao;
+import net.alteiar.dao.campaign.content.ArticleDaoImpl;
 import net.alteiar.model.content.Article;
 
 public class ArticleDaoTest {
 
-	@Before
-	public void setup() {
+	@BeforeClass
+	public static void setup() {
 
 		DatabaseUtil.start();
+	}
+
+	private ArticleDao dao;
+
+	@Before
+	public void before() {
+
 		DatabaseUtil.reset();
+
+		dao = new ArticleDaoImpl();
+		dao.setDatasource(DatabaseUtil.getDatasource());
 	}
 
 	@After
 	public void after() {
 
-		DatabaseUtil.shutdown();
+		DatabaseUtil.reset();
+		dao = null;
 	}
 
 	@Test
@@ -34,9 +47,9 @@ public class ArticleDaoTest {
 		article.setTitle(title);
 		article.setContent(htmlContent);
 
-		DaoFactory.getInstance().getArticleDao().insert(article);
+		dao.insert(article);
 
-		Article found = DaoFactory.getInstance().getArticleDao().find(article.getId());
+		Article found = dao.find(article.getId());
 
 		Assert.assertEquals(title, found.getTitle());
 		Assert.assertEquals(htmlContent, found.getContent());
@@ -52,16 +65,16 @@ public class ArticleDaoTest {
 		article.setTitle(title);
 		article.setContent(htmlContent);
 
-		DaoFactory.getInstance().getArticleDao().insert(article);
+		dao.insert(article);
 
-		Article found = DaoFactory.getInstance().getArticleDao().find(article.getId());
+		Article found = dao.find(article.getId());
 
 		Assert.assertEquals(title, found.getTitle());
 		Assert.assertEquals(htmlContent, found.getContent());
 
-		DaoFactory.getInstance().getArticleDao().delete(article.getId());
+		dao.delete(article.getId());
 
-		DaoFactory.getInstance().getArticleDao().find(article.getId());
+		dao.find(article.getId());
 	}
 
 	@Test
@@ -74,9 +87,9 @@ public class ArticleDaoTest {
 		article.setTitle(title);
 		article.setContent(htmlContent);
 
-		DaoFactory.getInstance().getArticleDao().insert(article);
+		dao.insert(article);
 
-		Article found = DaoFactory.getInstance().getArticleDao().find(article.getId());
+		Article found = dao.find(article.getId());
 
 		Assert.assertEquals(title, found.getTitle());
 		Assert.assertEquals(htmlContent, found.getContent());
@@ -84,9 +97,9 @@ public class ArticleDaoTest {
 		String anotherContent = "<p>test <b>bold</b> fin du paragraphe</p>";
 		article.setContent(anotherContent);
 
-		DaoFactory.getInstance().getArticleDao().update(article);
+		dao.update(article);
 
-		found = DaoFactory.getInstance().getArticleDao().find(article.getId());
+		found = dao.find(article.getId());
 
 		Assert.assertEquals(title, found.getTitle());
 		Assert.assertEquals(anotherContent, found.getContent());

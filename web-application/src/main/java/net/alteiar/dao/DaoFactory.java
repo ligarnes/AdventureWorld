@@ -14,107 +14,71 @@ import net.alteiar.dao.campaign.content.TopicDaoImpl;
 
 public class DaoFactory {
 
-	private static volatile DaoFactory INSTANCE;
+	private PlayerDao userDao;
 
-	public static DaoFactory getInstance() {
+	private ArticleDao articleDao;
+	private AccessDao accessDao;
 
-		if (INSTANCE == null) {
+	private TopicDao topicDao;
 
-			synchronized (DaoFactory.class) {
+	public void initialize() {
 
-				if (INSTANCE == null) {
+		final DataSource ds = AppContext.getInstance().getPersistenceAdapter().getDatasource();
 
-					setInstance(new DaoFactory());
-				}
+		DaoBuilder<PlayerDao> builderUserDao = new DaoBuilder<PlayerDao>() {
+
+			@Override
+			protected PlayerDao create() {
+				return new PlayerDaoImpl();
 			}
-		}
+		};
+		userDao = builderUserDao.build(ds);
 
-		return INSTANCE;
-	}
+		DaoBuilder<AccessDao> builderAccess = new DaoBuilder<AccessDao>() {
 
-	public static void setInstance(DaoFactory factory) {
+			@Override
+			protected AccessDao create() {
+				return new AccessDaoImpl();
+			}
+		};
+		accessDao = builderAccess.build(ds);
 
-		INSTANCE = factory;
-	}
+		DaoBuilder<ArticleDao> builderArticleDao = new DaoBuilder<ArticleDao>() {
 
-	private volatile PlayerDao userDao;
+			@Override
+			protected ArticleDao create() {
+				return new ArticleDaoImpl();
+			}
+		};
+		articleDao = builderArticleDao.build(ds);
 
-	private volatile ArticleDao articleDao;
-	private volatile AccessDao accessDao;
+		DaoBuilder<TopicDao> builderTopicDao = new DaoBuilder<TopicDao>() {
 
-	private volatile TopicDao categoryDao;
-
-	private void initDao(Dao dao) {
-
-		DataSource ds = AppContext.getInstance().getPersistenceAdapter().getDatasource();
-		dao.setDatasource(ds);
+			@Override
+			protected TopicDao create() {
+				return new TopicDaoImpl();
+			}
+		};
+		topicDao = builderTopicDao.build(ds);
 	}
 
 	public PlayerDao getPlayerDao() {
-
-		if (userDao == null) {
-
-			synchronized (this) {
-
-				if (userDao == null) {
-
-					userDao = new PlayerDaoImpl();
-					initDao(userDao);
-				}
-			}
-		}
 
 		return userDao;
 	}
 
 	public AccessDao getAccessDao() {
 
-		if (accessDao == null) {
-
-			synchronized (this) {
-
-				if (accessDao == null) {
-
-					accessDao = new AccessDaoImpl();
-					initDao(accessDao);
-				}
-			}
-		}
-
 		return accessDao;
 	}
 
 	public ArticleDao getArticleDao() {
-
-		if (articleDao == null) {
-
-			synchronized (this) {
-
-				if (articleDao == null) {
-
-					articleDao = new ArticleDaoImpl();
-					initDao(articleDao);
-				}
-			}
-		}
 
 		return articleDao;
 	}
 
 	public TopicDao getTopicDao() {
 
-		if (categoryDao == null) {
-
-			synchronized (this) {
-
-				if (categoryDao == null) {
-
-					categoryDao = new TopicDaoImpl();
-					initDao(categoryDao);
-				}
-			}
-		}
-
-		return categoryDao;
+		return topicDao;
 	}
 }

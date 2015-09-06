@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SqlScript xmlns="http://www.alteiar.net/sql">
+	<name>005-articleTable</name>
+	<description>Create the table for article</description>
+	<query>CREATE TABLE article (id bigint auto_increment, title VARCHAR(200), content CLOB(10000000), PRIMARY KEY(id))</query>
+</SqlScript>

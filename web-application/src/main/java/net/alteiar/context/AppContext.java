@@ -3,6 +3,7 @@ package net.alteiar.context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.alteiar.dao.DaoFactory;
 import net.alteiar.db.installer.exception.ParsingException;
 
 public class AppContext {
@@ -36,10 +37,14 @@ public class AppContext {
 
 	private final DatabaseInstaller dbInstaller;
 
+	private final DaoFactory daoFactory;
+
 	private AppContext() {
 
-		persistenceAdapter = new PersistenceAdapter();
+		persistenceAdapter = new H2PersistenceAdapterImpl();
 		dbInstaller = new DatabaseInstaller();
+
+		daoFactory = new DaoFactory();
 	}
 
 	public void initialize() {
@@ -55,6 +60,8 @@ public class AppContext {
 		}
 
 		dbInstaller.install();
+
+		daoFactory.initialize();
 	}
 
 	public void start() {
@@ -69,5 +76,10 @@ public class AppContext {
 	public PersistenceAdapter getPersistenceAdapter() {
 
 		return persistenceAdapter;
+	}
+
+	public DaoFactory getDaoFactory() {
+
+		return daoFactory;
 	}
 }

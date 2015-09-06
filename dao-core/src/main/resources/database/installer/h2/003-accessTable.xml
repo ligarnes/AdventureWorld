@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SqlScript xmlns="http://www.alteiar.net/sql">
+	<name>003-accessTable</name>
+	<description>Create the table for access</description>
+	<query>CREATE TABLE access (id bigint auto_increment, is_public BOOLEAN, PRIMARY KEY(id))</query>
+	<!-- 
+	<query>CREATE TABLE access_modification (access_id bigint, player_id bigint, FOREIGN KEY (access_id) REFERENCES access(id), FOREIGN KEY (player_id) REFERENCES player(player_id))</query>
+	<query>CREATE TABLE access_readonly (access_id bigint, player_id bigint, FOREIGN KEY (access_id) REFERENCES access(id), FOREIGN KEY (player_id) REFERENCES player(player_id))</query>
+	 -->
+</SqlScript>
