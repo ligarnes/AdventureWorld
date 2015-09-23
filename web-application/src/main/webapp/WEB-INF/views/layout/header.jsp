@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Live Campaign</a>
+      <a class="navbar-brand" href="#">Adventure World</a>
     </div>
     
 
@@ -20,6 +20,7 @@
     	<li class="${pageContext.request.requestURI eq '/WebApplication/WEB-INF/views/home.jsp' ? ' active' : ''}"><a href="/WebApplication/">Polos</a></li>
     	<li class="${pageContext.request.requestURI eq '/WebApplication/WEB-INF/views/player_list.jsp' ? ' active' : ''}"><a href="/WebApplication/player/">Joueurs</a></li>
     	<li class="${pageContext.request.requestURI eq '/WebApplication/WEB-INF/views/internal/article_create.jsp' ? ' active' : ''}"><a href="/WebApplication/article/create">Article</a></li>
+    	<li class="${pageContext.request.requestURI eq '/WebApplication/WEB-INF/views/internal/topic/topic_view.jsp' ? ' active' : ''}"><a href="/WebApplication/topic/list">Topics</a></li>
     	
 				<!-- 
     	<li class="active"><a href="#">World <span class="sr-only">(current)</span></a></li>

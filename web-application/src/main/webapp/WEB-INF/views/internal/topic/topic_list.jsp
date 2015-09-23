@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Joueur</title>
+<title>Topics</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <link rel='stylesheet' href='<c:url value="/resources/theme/css/bootstrap.min.css" />'>
 <link rel='stylesheet' href='<c:url value="/resources/theme/css/bootstrap-theme.min.css" />'>
@@ -19,13 +19,16 @@
 	<div class="container-fluid">
 		<div class="row">
 			<!-- start left -->
-			<div class="col-sm-3"></div>
+			<div class="col-sm-3">
+				<%@ include file="/WEB-INF/views/internal/topic/topic_view.jsp"%>
+				<%@ include file="/WEB-INF/views/internal/topic/topic_modal_add.jsp"%>
+			</div>
 			<!-- end left -->
 
 			<!-- start center -->
 			<div class="col-sm-9">
-				<%@ include file="/WEB-INF/views/internal/player/player_list.jsp"%>
-				<%@ include file="/WEB-INF/views/internal/player/player_modal_add.jsp"%>
+			
+				
 			</div>
 			<!-- end center -->
 		</div>

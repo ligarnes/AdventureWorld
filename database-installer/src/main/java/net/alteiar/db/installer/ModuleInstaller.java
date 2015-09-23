@@ -37,6 +37,7 @@ public class ModuleInstaller {
 			// execute the script
 			LoggerFactory.getLogger(getClass()).info("Execute script {} in module {}", scriptName, moduleName);
 
+			// TODO execute in transaction
 			for (String query : script.getQuery()) {
 
 				dao.execute(query);

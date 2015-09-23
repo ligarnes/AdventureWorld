@@ -13,6 +13,8 @@ public interface TopicDao extends Dao {
 
 	Topic find(long id);
 
+	List<Topic> findAll();
+
 	List<Topic> findAll(List<Long> ids);
 
 	List<Topic> findChildren(Topic topic);

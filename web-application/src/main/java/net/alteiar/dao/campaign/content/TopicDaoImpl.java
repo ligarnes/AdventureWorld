@@ -148,4 +148,10 @@ public class TopicDaoImpl extends BaseDao implements TopicDao {
 			return topic;
 		}
 	}
+
+	@Override
+	public List<Topic> findAll() {
+
+		return getJdbcTemplate().query(FIND, new TopicMapper());
+	}
 }

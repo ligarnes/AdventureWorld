@@ -20,7 +20,7 @@ import net.alteiar.model.content.Topic;
 @RequestMapping(value = "/article/")
 public class ArticleController extends AbstractController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -28,7 +28,7 @@ public class ArticleController extends AbstractController {
 	@RequestMapping(value = "/{articleId}", method = RequestMethod.GET)
 	public String viewArticle(@PathVariable Integer articleId, Model model) {
 
-		logger.info("Get the article with id {}.", articleId);
+		LOGGER.info("Get the article with id {}.", articleId);
 
 		Article article = null;
 		try {

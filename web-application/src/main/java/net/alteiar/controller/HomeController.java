@@ -22,6 +22,8 @@ public class HomeController extends AbstractController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 
+		LOGGER.debug("Load home view");
+
 		return "home";
 	}
 
