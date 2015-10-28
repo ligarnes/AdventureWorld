@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SqlScript xmlns="http://www.alteiar.net/sql">
+	<name>002-campaignTable</name>
+	<description>Create the table for campaign</description>
+	<query>CREATE TABLE campaign (id bigint auto_increment, name VARCHAR(200), description CLOB(10000000), PRIMARY KEY(id))</query>
+	<query>CREATE TABLE campaign_content (id_campaign bigint, id_content bigint, FOREIGN KEY (id_campaign) REFERENCES campaign(id))</query>
+</SqlScript>

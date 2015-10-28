@@ -1,2 +1,18 @@
 language: java
 jdk:  oraclejdk8
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "K3+uFaIYCjTc13LFM2+2Xj7Rt7L8Lfp+55kuoPOg7LHcqsvo9EC2IX+b9uQn5/Q2S+YgodrcUyamKVDni4vHEIO6fOJYsvIVSWpYcGmEl/DuXvLBy5mDxV85Allveuj7K4ma2OIC4tgURm/TKl2DG/yULI0m57MemhBIJHcUfpFtyz90Inj78O5XVe0NOiSk9NjW3tNv7vArUdGGi44O6V9yIDpP5UsxIadyf6fioBTSla4qWCtjT9TOT+vXx1MwxE8jm/BufpXiM90BGZP/Zc9kQ4Oj4DL0sWQ8dRsObMu2DFLvHZLah0ASM0IerqNs4pwjv+HRKvu/AhpwCdt5+q6zRsq99hPx+dL6nbOhGMESHf8LHw0HYo8oLn8RUZLzK8JsL3uW26T5UV+jmyKbMB7Hq8NZT9iiwdA4BhrWsxZ5jCOUMGyfZAqKHNe1Djx9JHYUJSQ3P4D6AMflYLi0+VKJr6qtMrUO3vD0/pe6NwZEL56WCTPnbKJutQwrarlgFt1WjJfBkPP+FV/lI/jjmyu3EqUnxyQt8wjheHdnAoxRawkEMQ6sd5XkoiEHEU/NB54ZN+JYnhxPZhKDZJW4hiiE7rK0h8e7NeHcN8/LH4wubrrf3x6o63irUQeMAyiiaa9537Sc/BsZa+jApym07dWiAfkMU8qRsSWriRm+3QI="
+
+addons:
+  coverity_scan:
+    project:
+      name: "ligarnes/AdventureWorld"
+      description: "Adventure World"
+    notification_email: cody.stoutenburg@gmail.com
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn compile -DskipTests"
+    branch_pattern: develop
